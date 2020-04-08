@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" href="../css/photon.css" rel="stylesheet"> -->
+    <script src="https://use.fontawesome.com/7d5df81bb6.js"></script>
+    <link rel="stylesheet" href="../css/EasyAttach.css">
+    <title>Easy Attach</title>
+</head>
+<body>
+
+    <div id='container'>
+        <div class="borderless">
+            <a href="./index.html" class="header"><i class="fa fa-home" aria-hidden="true"></i>Autotask</a>
+          </div>
+        <!-- title -->
+        <h3 class="title">Easy Attach!</h3>
+        <p>Drag your files here or paste a screenshot</p>
+        <p>Dragged files will upload automatically</p>
+        <hr>
+        <!-- upload box -->
+        <div id="file">
+            <img id="paste-file" src="" alt="">
+            <p id="dropped-file"></p>
+        </div>
+        <form>
+            <input id="ticket" type="text" placeholder="Ticket#">
+            <button type="button" id="button" class="butt animated">Submit Attachment</button>
+            <button type="button" id="button-screenshot" class="butt animated">ScreenShot</button>
+        </form>
+    </div>
+</body>
+<script>
+        //js drag and drop
+    (function () {
+        var holder = document.getElementById('file');
+        var dropped = document.getElementById('dropped-file');
+
+        holder.ondragover = () => {
+            return false;
+        };
+
+        holder.ondragleave = () => {
+            return false;
+        };
+
+        holder.ondragend = () => {
+            return false;
+        };
+
+        holder.ondrop = (e) => {
+            e.preventDefault();
+
+            for (let f of e.dataTransfer.files) {
+                //get value of input box
+                var ticket = document.getElementById("ticket").value;
+                //make sure there is a value that matches at least the first half of the ticket# in autotask
+                if (ticket.length <9){
+                    alert('Please put in full ticket# before submitting')
+                }else{
+                    alert('Attachment has been Submitted')
+                    //display file path to user
+                    dropped.innerHTML='File to uploaded here: '+ f.path
+                    //create attachment using api (underlying code in atwsjs)
+                    atws.query('Ticket', 'TicketNumber', 'BeginsWith', `${ticket}`, 'id')
+                    .then(xmlResult => atws.CreateAttachment(`${f.path}`,xmlResult))
+                    .catch(err => err => dropped.innerHTML = err);
+                }
+            }
+            
+            return false;
+        };
+    })();
+    //copy paste image only
+    const electron = require('electron')
+    const { clipboard } = require('electron')
+    const fs = require('fs')
+    const atws = require('../atwsJS')
+
+    //get html elements
+    var paste = document.getElementById('file')
+    var img = document.getElementById('paste-file')
+    var btn = document.getElementById('button')
+    //paste function
+
+    paste.addEventListener('paste', function(e){
+        //gets clipboard data and assigns it to a var
+        
+        const image = clipboard.readImage()
+        fs.writeFileSync("paste.png", image.toPNG())
+        //saves clipboard data to a files
+       img.src = "..\\..\\..\\paste.png"
+    })
+    //button click function
+    btn.addEventListener("click", function(){
+        var dropped = document.getElementById('dropped-file');
+        dropped.innerHTML=""
+        var ticket = document.getElementById("ticket").value;
+        if (ticket.length <9){
+            alert('Please put in full ticket# before submitting')
+            //check for file
+        }else if(fs.existsSync("paste.png")){
+        //get elements and value of input field
+        var ticket = document.getElementById("ticket").value;
+        img.src=""
+        
+      
+        //create attachment using api (underlying code in atwsjs)
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+        atws.query('Ticket', 'TicketNumber', 'BeginsWith', `${ticket}`, 'id')
+            .then(xmlResult => atws.CreateAttachment('paste.png',xmlResult))
+            delay(3000).then(()=>fs.unlinkSync("paste.png"))
+            .catch(err => dropped.innerHTML = err );
+            alert('Attachment has been Submitted')
+            
+        //if paste.png does not exist
+        }else{
+            alert("No File To Upload")
+        }
+    })
+
+       //screenshot button
+       var ScreenShot_btn = document.getElementById('button-screenshot')
+    ScreenShot_btn.addEventListener("click", function(){
+
+        const Shell = require('node-powershell');
+ 
+            const ps = new Shell({
+            executionPolicy: 'Bypass',
+            noProfile: true
+            });
+            
+            ps.addCommand('snippingtool.exe /clip');
+            ps.invoke()
+            .then(output => {
+            alert("Capture Then Paste Below (CTRL+V)");
+            })
+            .catch(err => {
+            console.log(err);
+            });
+        // var spawn = require("child_process").spawn;
+        // spawn("powershell.exe",[".\\screenshot.ps1"]);
+    });
+
+</script>
+</html>

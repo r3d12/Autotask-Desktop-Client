@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>My Ticket</title>
+      <!-- links -->
+   <link rel="stylesheet" href="../css/photon.css" rel="stylesheet">
+   <link rel="stylesheet" href="../css/index.css">
+</head>
+<body>
+
+   
+   <div class="window">
+      <div class="webview">
+         <header class="toolbar toolbar-header">
+          
+            <div class="toolbar-actions">
+              <a href='./index.html' class="btn btn-default">
+               <span class="icon icon-home icon-text"></span>
+               AutoTask
+              </a>
+              <a href='./EasyAttach.html' class="btn btn-default">
+                <span class="icon icon-upload icon-text"></span>
+                EasyAttachment
+              </a>
+              <span id="IP" class="pull-right"></span>
+            </div>
+            
+          </header>
+          
+         <webview id="foo" src="https://ww15.autotask.net/Mvc/Framework/Navigation.mvc/Landing" webpreferences="nativeWindowOpen=true" allowpopups autosize="on" style="min-width:100%; min-height:100%;">
+            <div class="indicator"></div>
+         </webview>
+      </div>
+
+   </div>
+</body>
+<script src="./index.js"></script>
+  
+</html>
