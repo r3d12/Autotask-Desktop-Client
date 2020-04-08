@@ -90,7 +90,7 @@ options = {
  'url': 'https://webservices15.autotask.net/ATServices/1.6/atws.asmx',
  'headers': {
     'Content-Type': 'text/xml',
-    'Authorization': 'Basic YXBpdXNlckBiZXJrc2hpcmVoYXRoYXdheWF1dG9tb3RpdmUuY29tOnozWXZhVHZYYmNTUHEwTG5Ob04w'
+    'Authorization': 'Basic ---'
  },
 
  body: xml
