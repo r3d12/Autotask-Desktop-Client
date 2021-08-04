@@ -13,7 +13,7 @@
     "node-powershell": "^4.0.0",
     "node-wmi": "0.0.5",
     "soap": "^0.30.0",
-    "xmldom": "^0.2.1"
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "electron-packager": "^14.1.1"
