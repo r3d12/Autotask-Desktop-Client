@@ -9,7 +9,7 @@
   "author": "e",
   "license": "ISC",
   "dependencies": {
-    "electron": "^7.1.7",
+    "electron": "^13.6.6",
     "node-powershell": "^4.0.0",
     "node-wmi": "0.0.5",
     "soap": "^0.30.0",
